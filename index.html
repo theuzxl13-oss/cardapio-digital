@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Athina Bistrô &amp; Restaurante · Gastronomia autoral em Embu-Guaçu</title>
+  <meta name="description" content="Athina Bistrô & Restaurante: gastronomia autoral desde 2010 em Embu-Guaçu - SP. Veja o cardápio, visualize os pratos em 3D e na sua mesa com realidade aumentada e faça seu pedido pelo WhatsApp.">
+  <meta name="theme-color" content="#121212">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Athina Bistrô & Restaurante">
+  <meta property="og:description" content="Gastronomia autoral desde 2010 em Embu-Guaçu. Cardápio digital com pratos em 3D e realidade aumentada.">
+  <meta property="og:image" content="assets/images/casa/hero-1600.webp">
+  <link rel="icon" href="assets/images/favicon.svg" type="image/svg+xml">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" as="image" href="assets/images/casa/hero-1600.webp" imagesrcset="assets/images/casa/hero-800.webp 800w, assets/images/casa/hero-1600.webp 1600w" imagesizes="100vw">
+
+  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <!-- Tailwind CSS v4 (CDN oficial do navegador) -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.3.0/dist/index.global.js"></script>
+  <style type="text/tailwindcss">
+    @theme {
+      --color-mostarda: #F4C414;
+      --color-dourado: #EAB308;
+      --color-terracota: #B91C1C;
+      --color-bordo: #991B1B;
+      --color-carvao: #121212;
+      --color-creme: #FAF8F5;
+      --color-areia: #EFE8DC;
+      --font-display: "Cormorant Garamond", "Playfair Display", Georgia, serif;
+      --font-sans: "Plus Jakarta Sans", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+  </style>
+
+  <!-- Ícones (Lucide) e visualizador 3D/AR (Google model-viewer) -->
+  <script defer src="https://unpkg.com/lucide@1.60.0/dist/umd/lucide.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@4.4.0/dist/model-viewer.min.js"></script>
+</head>
+<body class="bg-creme text-carvao font-sans antialiased">
+  <a href="#conteudo" class="skip-link">Pular para o conteúdo</a>
+
+  <!-- ============================================================ HEADER -->
+  <header id="topo" class="site-header fixed inset-x-0 top-0 z-40" data-state="top">
+    <div class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:h-20 lg:px-8">
+      <a href="#inicio" class="brand group flex items-center gap-3" aria-label="Athina Bistrô & Restaurante — início">
+        <span class="brand-mark" aria-hidden="true">A</span>
+        <span class="flex flex-col leading-none">
+          <span class="font-display text-2xl font-semibold tracking-wide lg:text-[1.7rem]">Athina</span>
+          <span class="mt-0.5 text-[0.62rem] font-semibold uppercase tracking-[0.28em] opacity-80">Bistrô &amp; Restaurante</span>
+        </span>
+      </a>
+
+      <nav class="hidden md:block" aria-label="Navegação principal">
+        <ul class="flex items-center gap-1 text-sm font-medium">
+          <li><a class="nav-link" href="#inicio">Início</a></li>
+          <li><a class="nav-link" href="#cardapio">Cardápio</a></li>
+          <li><a class="nav-link" href="#bistro">O Bistrô</a></li>
+          <li><a class="nav-link" href="#localizacao">Localização</a></li>
+        </ul>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <a href="#" data-whatsapp class="hidden lg:inline-flex btn btn-ghost-light text-sm" target="_blank" rel="noopener">
+          <i data-lucide="message-circle" class="size-4"></i> WhatsApp
+        </a>
+        <button type="button" class="icon-btn relative" data-open-cart aria-label="Abrir sacola de pedidos, 0 itens" id="cart-button">
+          <i data-lucide="shopping-bag" class="size-5"></i>
+          <span class="cart-badge" data-cart-count aria-hidden="true" hidden>0</span>
+        </button>
+        <button type="button" class="icon-btn md:hidden" id="menu-button" aria-label="Abrir menu" aria-expanded="false" aria-controls="mobile-menu">
+          <i data-lucide="menu" class="size-5"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Menu mobile -->
+  <div id="mobile-menu" class="overlay mobile-menu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
+    <div class="overlay-backdrop" data-close></div>
+    <div class="mobile-menu-panel">
+      <div class="flex items-center justify-between px-5 pt-5">
+        <span class="font-display text-2xl text-mostarda">Athina</span>
+        <button type="button" class="icon-btn text-creme" data-close aria-label="Fechar menu"><i data-lucide="x" class="size-6"></i></button>
+      </div>
+      <nav aria-label="Navegação mobile" class="px-5 pt-8">
+        <ul class="space-y-1">
+          <li><a class="mobile-link" href="#inicio" data-close>Início</a></li>
+          <li><a class="mobile-link" href="#cardapio" data-close>Cardápio</a></li>
+          <li><a class="mobile-link" href="#bistro" data-close>O Bistrô</a></li>
+          <li><a class="mobile-link" href="#localizacao" data-close>Localização</a></li>
+        </ul>
+      </nav>
+      <div class="mt-auto space-y-3 px-5 pb-8">
+        <a href="#" data-whatsapp target="_blank" rel="noopener" class="btn btn-gold w-full justify-center"><i data-lucide="message-circle" class="size-5"></i> Falar pelo WhatsApp</a>
+        <p class="text-center text-sm text-creme/60" data-funcionamento></p>
+      </div>
+    </div>
+  </div>
+
+  <main id="conteudo">
+    <!-- ============================================================ HERO -->
+    <section id="inicio" class="hero relative isolate overflow-hidden bg-carvao text-creme">
+      <img class="hero-img" src="assets/images/casa/hero-1600.webp" srcset="assets/images/casa/hero-800.webp 800w, assets/images/casa/hero-1600.webp 1600w" sizes="100vw" alt="Mesa servida com pratos autorais, carnes grelhadas, legumes e molhos" fetchpriority="high">
+      <div class="hero-shade" aria-hidden="true"></div>
+
+      <div class="relative mx-auto flex min-h-[100svh] max-w-7xl flex-col justify-end px-4 pb-10 pt-28 sm:px-6 lg:justify-center lg:px-8 lg:pb-16">
+        <div class="max-w-2xl reveal">
+          <div class="mb-6 flex flex-wrap items-center gap-3">
+            <span class="band-seal" title="Athina na Band">
+              <i data-lucide="tv" class="size-4"></i>
+              <span><small>Destaque na mídia</small>Athina na Band</span>
+            </span>
+            <span class="pill-dark"><i data-lucide="award" class="size-4 text-mostarda"></i> Desde 2010</span>
+          </div>
+
+          <p class="eyebrow text-mostarda">Bistrô &amp; Restaurante · Embu-Guaçu</p>
+          <h1 class="mt-3 font-display text-[2.6rem] font-semibold leading-[1.02] sm:text-6xl lg:text-7xl">
+            Gastronomia Autoral desde 2010 em <em class="text-mostarda not-italic font-display italic">Embu-Guaçu</em>.
+          </h1>
+          <p class="mt-5 max-w-xl text-base leading-relaxed text-creme/80 sm:text-lg">
+            Há mais de 15 anos, o Athina transforma ingredientes escolhidos com cuidado em pratos com assinatura própria — servidos com o acolhimento de um bistrô de verdade. Explore o cardápio, veja cada prato em 3D e coloque-o sobre a sua mesa antes de pedir.
+          </p>
+
+          <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+            <a href="#cardapio" class="btn btn-gold btn-lg justify-center"><i data-lucide="utensils-crossed" class="size-5"></i> Ver Cardápio</a>
+            <a href="#" data-whatsapp target="_blank" rel="noopener" class="btn btn-outline-light btn-lg justify-center"><i data-lucide="message-circle" class="size-5"></i> Falar pelo WhatsApp</a>
+          </div>
+
+          <ul class="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-creme/75">
+            <li class="flex items-center gap-2"><i data-lucide="clock" class="size-4 text-mostarda"></i> <span data-funcionamento></span></li>
+            <li class="flex items-center gap-2"><i data-lucide="map-pin" class="size-4 text-mostarda"></i> Centro, Embu-Guaçu - SP</li>
+          </ul>
+        </div>
+
+        <!-- Cartão do prato em destaque (desktop) -->
+        <aside class="hero-feature reveal hidden lg:block" aria-label="Prato em destaque" id="hero-feature"></aside>
+      </div>
+
+      <a href="#ar" class="scroll-cue" aria-label="Rolar para conhecer a experiência em realidade aumentada"><i data-lucide="chevron-down" class="size-5"></i></a>
+    </section>
+
+    <!-- ============================================================ AR STRIP -->
+    <section id="ar" class="relative bg-carvao text-creme" aria-labelledby="ar-title">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div class="grid gap-10 lg:grid-cols-[1fr_1.3fr] lg:items-center">
+          <div class="reveal">
+            <p class="eyebrow text-mostarda">Novidade · Realidade aumentada</p>
+            <h2 id="ar-title" class="mt-3 font-display text-4xl font-semibold leading-tight sm:text-5xl">Veja o prato na sua mesa antes de pedir.</h2>
+            <p class="mt-4 text-creme/70">Cada prato do cardápio tem seu próprio modelo 3D. Gire, aproxime e, em celulares compatíveis, use a câmera para posicioná-lo em tamanho real sobre a sua mesa.</p>
+          </div>
+          <ol class="grid gap-4 sm:grid-cols-3">
+            <li class="step-card reveal"><span class="step-num">1</span><i data-lucide="utensils" class="size-6 text-mostarda"></i><h3>Escolha um prato</h3><p>Navegue pelo cardápio e encontre o que deu vontade.</p></li>
+            <li class="step-card reveal"><span class="step-num">2</span><i data-lucide="scan-line" class="size-6 text-mostarda"></i><h3>Toque em “Ver na Minha Mesa”</h3><p>O modelo 3D abre e você pode girar e dar zoom.</p></li>
+            <li class="step-card reveal"><span class="step-num">3</span><i data-lucide="camera" class="size-6 text-mostarda"></i><h3>Aponte para a mesa</h3><p>Autorize a câmera e posicione o prato no ambiente real.</p></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ CARDÁPIO -->
+    <section id="cardapio" class="scroll-mt-16 bg-creme" aria-labelledby="cardapio-title">
+      <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div class="max-w-2xl reveal">
+            <p class="eyebrow text-terracota">Cardápio</p>
+            <h2 id="cardapio-title" class="mt-2 font-display text-4xl font-semibold leading-tight text-carvao sm:text-5xl">Pratos com assinatura do Athina</h2>
+            <p class="mt-3 text-carvao/70">Entradas, criações autorais, executivos do almoço, massas, sobremesas e uma carta de bebidas para acompanhar.</p>
+          </div>
+          <div class="w-full lg:max-w-sm reveal">
+            <label for="busca" class="sr-only">Pesquisar pratos por nome ou ingrediente</label>
+            <div class="search-box">
+              <i data-lucide="search" class="size-5 text-carvao/50" aria-hidden="true"></i>
+              <input id="busca" type="search" inputmode="search" autocomplete="off" placeholder="Buscar prato ou ingrediente…" class="w-full bg-transparent text-base outline-none placeholder:text-carvao/45">
+              <button type="button" id="busca-limpar" class="icon-btn-sm" aria-label="Limpar pesquisa" hidden><i data-lucide="x" class="size-4"></i></button>
+            </div>
+          </div>
+        </div>
+
+        <div id="aviso-demo" class="demo-notice mt-8" role="note" hidden>
+          <i data-lucide="info" class="size-5 shrink-0 text-bordo"></i>
+          <p><strong>Cardápio demonstrativo.</strong> Pratos, descrições, fotos e preços são ilustrativos e serão substituídos pelo cardápio oficial do Athina. Os modelos 3D também são ilustrativos até a digitalização dos pratos reais.</p>
+        </div>
+
+        <div class="chips-wrap mt-8" role="group" aria-label="Filtrar por categoria">
+          <div id="filtros" class="chips"></div>
+        </div>
+
+        <p id="contagem" class="mt-6 text-sm text-carvao/60" aria-live="polite"></p>
+
+        <div id="grade" class="menu-grid mt-4"></div>
+
+        <div id="vazio" class="empty-state" hidden>
+          <i data-lucide="search-x" class="size-10 text-carvao/30"></i>
+          <p class="mt-3 font-display text-2xl">Nenhum prato encontrado</p>
+          <p class="mt-1 text-sm text-carvao/60">Tente outro nome ou ingrediente, ou veja todas as categorias.</p>
+          <button type="button" class="btn btn-dark mt-5" id="vazio-limpar">Ver todos os pratos</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ O BISTRÔ -->
+    <section id="bistro" class="scroll-mt-16 bg-areia/60" aria-labelledby="bistro-title">
+      <div class="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-8 lg:py-24">
+        <div class="bistro-gallery reveal">
+          <figure class="g1">
+            <img src="assets/images/casa/salao-800.webp" srcset="assets/images/casa/salao-800.webp 800w, assets/images/casa/salao-1600.webp 1600w" sizes="(min-width:1024px) 30vw, 70vw" alt="Salão de restaurante com iluminação aconchegante (imagem ilustrativa)" loading="lazy" decoding="async">
+            <figcaption>Imagem ilustrativa · espaço para foto do salão</figcaption>
+          </figure>
+          <figure class="g2">
+            <img src="assets/images/casa/chef-800.webp" alt="Chef finalizando um prato na cozinha (imagem ilustrativa)" loading="lazy" decoding="async">
+            <figcaption>Imagem ilustrativa · espaço para foto da cozinha</figcaption>
+          </figure>
+          <figure class="g3">
+            <img src="assets/images/casa/mesa-800.webp" alt="Mesa posta com pratos e taças (imagem ilustrativa)" loading="lazy" decoding="async">
+            <figcaption>Imagem ilustrativa · espaço para foto dos pratos</figcaption>
+          </figure>
+        </div>
+
+        <div class="reveal">
+          <p class="eyebrow text-terracota">O Bistrô</p>
+          <h2 id="bistro-title" class="mt-2 font-display text-4xl font-semibold leading-tight sm:text-5xl">Uma cozinha autoral com alma de casa.</h2>
+          <div class="mt-5 space-y-4 text-carvao/75 leading-relaxed">
+            <p>Desde 2010, o Athina Bistrô &amp; Restaurante recebe Embu-Guaçu à mesa com uma proposta clara: gastronomia autoral, feita com técnica, ingredientes escolhidos com cuidado e o carinho de quem cozinha para receber bem.</p>
+            <p>São mais de 15 anos de tradição construindo receitas com identidade própria — dos executivos do dia a dia às criações da casa — sempre no clima acolhedor de um bistrô, onde cada prato é pensado para ser lembrado.</p>
+            <p>Um trabalho que ganhou destaque na mídia com o <strong class="text-bordo">Athina na Band</strong>, e que segue servindo almoços de terça a domingo no Centro de Embu-Guaçu.</p>
+          </div>
+
+          <dl class="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+            <div class="stat"><dt>Desde</dt><dd>2010</dd></div>
+            <div class="stat"><dt>Tradição</dt><dd>+15 anos</dd></div>
+            <div class="stat"><dt>Cozinha</dt><dd>Autoral</dd></div>
+            <div class="stat"><dt>Na mídia</dt><dd>Band</dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================ LOCALIZAÇÃO -->
+    <section id="localizacao" class="scroll-mt-16 bg-carvao text-creme" aria-labelledby="local-title">
+      <div class="mx-auto grid max-w-7xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-[1fr_1.2fr] lg:gap-14 lg:px-8 lg:py-24">
+        <div class="reveal">
+          <p class="eyebrow text-mostarda">Localização &amp; contato</p>
+          <h2 id="local-title" class="mt-2 font-display text-4xl font-semibold leading-tight sm:text-5xl">Venha almoçar no Athina.</h2>
+
+          <ul class="mt-8 space-y-5">
+            <li class="info-row">
+              <span class="info-icon"><i data-lucide="map-pin" class="size-5"></i></span>
+              <div><p class="info-label">Endereço</p><p data-endereco></p></div>
+            </li>
+            <li class="info-row">
+              <span class="info-icon"><i data-lucide="clock" class="size-5"></i></span>
+              <div><p class="info-label">Funcionamento</p><p data-funcionamento-detalhe></p></div>
+            </li>
+            <li class="info-row">
+              <span class="info-icon"><i data-lucide="phone" class="size-5"></i></span>
+              <div><p class="info-label">WhatsApp</p><p><a href="#" data-whatsapp target="_blank" rel="noopener" class="link-gold" data-whatsapp-numero></a></p></div>
+            </li>
+          </ul>
+
+          <div class="mt-8 grid gap-3 sm:grid-cols-2">
+            <a href="#" id="rota" target="_blank" rel="noopener" class="btn btn-gold justify-center"><i data-lucide="navigation" class="size-5"></i> Abrir rota no Google Maps</a>
+            <a href="#" data-whatsapp target="_blank" rel="noopener" class="btn btn-outline-light justify-center"><i data-lucide="message-circle" class="size-5"></i> Falar pelo WhatsApp</a>
+            <a href="#" data-instagram target="_blank" rel="noopener" class="btn btn-outline-light justify-center"><svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg> <span data-instagram-usuario></span></a>
+            <div id="ifood-slot"></div>
+          </div>
+        </div>
+
+        <div class="map-card reveal">
+          <div class="map-frame" id="mapa">
+            <button type="button" class="map-load" id="mapa-carregar">
+              <i data-lucide="map" class="size-8 text-mostarda"></i>
+              <span class="mt-3 font-display text-2xl">Ver mapa interativo</span>
+              <span class="mt-1 text-sm text-creme/60">Carrega o Google Maps nesta página</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================================================ FOOTER -->
+  <footer class="bg-[#0b0b0b] text-creme/70">
+    <div class="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
+      <div class="lg:col-span-2">
+        <a href="#inicio" class="flex items-center gap-3 text-creme" aria-label="Athina Bistrô & Restaurante — voltar ao início">
+          <span class="brand-mark" aria-hidden="true">A</span>
+          <span class="flex flex-col leading-none">
+            <span class="font-display text-3xl font-semibold">Athina</span>
+            <span class="mt-1 text-[0.62rem] font-semibold uppercase tracking-[0.28em] text-mostarda">Bistrô &amp; Restaurante</span>
+          </span>
+        </a>
+        <p class="mt-5 max-w-md text-sm leading-relaxed">Gastronomia autoral desde 2010 em Embu-Guaçu. Mais de 15 anos de tradição servindo almoços com identidade, técnica e acolhimento. Também estamos no iFood.</p>
+      </div>
+      <div>
+        <h2 class="footer-title">Navegação</h2>
+        <ul class="mt-4 space-y-2 text-sm">
+          <li><a class="footer-link" href="#inicio">Início</a></li>
+          <li><a class="footer-link" href="#cardapio">Cardápio</a></li>
+          <li><a class="footer-link" href="#bistro">O Bistrô</a></li>
+          <li><a class="footer-link" href="#localizacao">Localização</a></li>
+          <li><button type="button" class="footer-link" data-open-cart>Meu pedido</button></li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="footer-title">Contato</h2>
+        <ul class="mt-4 space-y-3 text-sm">
+          <li class="flex gap-2"><i data-lucide="map-pin" class="mt-0.5 size-4 shrink-0 text-mostarda"></i><span data-endereco></span></li>
+          <li class="flex gap-2"><i data-lucide="clock" class="mt-0.5 size-4 shrink-0 text-mostarda"></i><span data-funcionamento></span></li>
+          <li class="flex gap-2"><i data-lucide="message-circle" class="mt-0.5 size-4 shrink-0 text-mostarda"></i><a class="footer-link" href="#" data-whatsapp target="_blank" rel="noopener" data-whatsapp-numero></a></li>
+          <li class="flex gap-2"><svg class="mt-0.5 size-4 shrink-0 text-mostarda" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg><a class="footer-link" href="#" data-instagram target="_blank" rel="noopener" data-instagram-usuario></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-white/10">
+      <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-6 text-xs text-creme/45 sm:flex-row sm:justify-between sm:px-6 lg:px-8">
+        <p>© <span data-ano></span> Athina Bistrô &amp; Restaurante. Todos os direitos reservados.</p>
+        <p>Pedidos, entregas e reservas são confirmados somente após resposta do restaurante. Bebidas alcoólicas: venda proibida para menores de 18 anos.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Barra fixa do pedido (mobile) -->
+  <button type="button" class="mobile-cart-bar" id="mobile-cart-bar" data-open-cart hidden>
+    <span class="flex items-center gap-2"><i data-lucide="shopping-bag" class="size-5"></i> <span data-cart-label>Ver pedido</span></span>
+    <strong data-cart-total>R$ 0,00</strong>
+  </button>
+
+  <!-- ============================================================ CARRINHO (drawer) -->
+  <div id="cart" class="overlay drawer" role="dialog" aria-modal="true" aria-labelledby="cart-title" hidden>
+    <div class="overlay-backdrop" data-close></div>
+    <div class="drawer-panel">
+      <header class="drawer-head">
+        <div>
+          <p class="eyebrow text-terracota">Seu pedido</p>
+          <h2 id="cart-title" class="font-display text-3xl font-semibold">Sacola</h2>
+        </div>
+        <button type="button" class="icon-btn" data-close aria-label="Fechar sacola"><i data-lucide="x" class="size-5"></i></button>
+      </header>
+
+      <div class="drawer-body" id="cart-body">
+        <div id="cart-empty" class="cart-empty">
+          <i data-lucide="shopping-bag" class="size-10 text-carvao/25"></i>
+          <p class="mt-3 font-display text-2xl">Sua sacola está vazia</p>
+          <p class="mt-1 text-sm text-carvao/60">Adicione pratos do cardápio ou faça apenas uma reserva de mesa.</p>
+          <a href="#cardapio" class="btn btn-dark mt-5" data-close>Explorar cardápio</a>
+        </div>
+        <ul id="cart-items" class="cart-items"></ul>
+
+        <form id="checkout" class="checkout" novalidate>
+          <fieldset class="field-group">
+            <legend class="field-legend">Como deseja?</legend>
+            <div class="mode-grid">
+              <label class="mode-option"><input type="radio" name="modalidade" value="retirada" checked><span><i data-lucide="store" class="size-5"></i>Retirada no Balcão</span></label>
+              <label class="mode-option"><input type="radio" name="modalidade" value="entrega"><span><i data-lucide="bike" class="size-5"></i>Entrega</span></label>
+              <label class="mode-option"><input type="radio" name="modalidade" value="reserva"><span><i data-lucide="calendar-days" class="size-5"></i>Reserva de Mesa</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="cliente-nome">Seu nome</label>
+            <input id="cliente-nome" name="nome" type="text" autocomplete="name" required maxlength="80" placeholder="Como devemos te chamar?">
+            <p class="field-error" data-error-for="nome"></p>
+          </div>
+
+          <div data-mode-panel="entrega" hidden>
+            <div class="field">
+              <label for="end-rua">Endereço de entrega</label>
+              <input id="end-rua" name="rua" type="text" autocomplete="street-address" maxlength="120" placeholder="Rua / Avenida e número">
+              <p class="field-error" data-error-for="rua"></p>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="field">
+                <label for="end-bairro">Bairro</label>
+                <input id="end-bairro" name="bairro" type="text" maxlength="60" placeholder="Bairro">
+                <p class="field-error" data-error-for="bairro"></p>
+              </div>
+              <div class="field">
+                <label for="end-comp">Complemento <span class="opt">(opcional)</span></label>
+                <input id="end-comp" name="complemento" type="text" maxlength="60" placeholder="Apto, bloco…">
+              </div>
+            </div>
+            <div class="field">
+              <label for="end-ref">Ponto de referência <span class="opt">(opcional)</span></label>
+              <input id="end-ref" name="referencia" type="text" maxlength="100" placeholder="Próximo a…">
+            </div>
+            <p class="hint"><i data-lucide="info" class="size-4"></i> A taxa e a disponibilidade de entrega para o seu endereço serão informadas pelo restaurante.</p>
+          </div>
+
+          <div data-mode-panel="reserva" hidden>
+            <div class="grid grid-cols-2 gap-3">
+              <div class="field">
+                <label for="res-data">Data</label>
+                <input id="res-data" name="data" type="date">
+                <p class="field-error" data-error-for="data"></p>
+              </div>
+              <div class="field">
+                <label for="res-hora">Horário desejado</label>
+                <input id="res-hora" name="hora" type="time" step="900">
+                <p class="field-error" data-error-for="hora"></p>
+              </div>
+            </div>
+            <div class="field">
+              <label for="res-pessoas">Quantidade de pessoas</label>
+              <div class="stepper" data-stepper>
+                <button type="button" data-step="-1" aria-label="Diminuir pessoas"><i data-lucide="minus" class="size-4"></i></button>
+                <input id="res-pessoas" name="pessoas" type="number" inputmode="numeric" min="1" max="40" value="2">
+                <button type="button" data-step="1" aria-label="Aumentar pessoas"><i data-lucide="plus" class="size-4"></i></button>
+              </div>
+              <p class="field-error" data-error-for="pessoas"></p>
+            </div>
+            <p class="hint"><i data-lucide="info" class="size-4"></i> Atendemos de terça a domingo, no almoço. O horário será confirmado pelo restaurante. Os pratos da sacola (se houver) seguem como pré-pedido.</p>
+          </div>
+
+          <div class="field">
+            <label for="obs">Observações do pedido <span class="opt">(opcional)</span></label>
+            <textarea id="obs" name="observacoes" rows="3" maxlength="500" placeholder="Ex.: sem cebola, carne ao ponto, retirar algum ingrediente…"></textarea>
+          </div>
+        </form>
+      </div>
+
+      <footer class="drawer-foot">
+        <dl class="totals">
+          <div><dt>Subtotal</dt><dd data-subtotal>R$ 0,00</dd></div>
+          <div data-entrega-row hidden><dt>Entrega</dt><dd class="text-carvao/60">a confirmar</dd></div>
+          <div class="total"><dt>Total</dt><dd data-total>R$ 0,00</dd></div>
+        </dl>
+        <button type="button" id="enviar-whatsapp" class="btn btn-whats w-full justify-center btn-lg">
+          <i data-lucide="message-circle" class="size-5"></i> <span id="enviar-label">Enviar pedido pelo WhatsApp</span>
+        </button>
+        <p class="mt-3 text-center text-xs leading-snug text-carvao/55">Seu pedido, entrega ou reserva só estará confirmado após a resposta do restaurante no WhatsApp.</p>
+        <button type="button" id="limpar-sacola" class="mt-2 w-full text-center text-xs font-semibold text-bordo underline-offset-4 hover:underline" hidden>Esvaziar sacola</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ============================================================ VISUALIZADOR 3D / AR -->
+  <div id="viewer" class="overlay viewer" role="dialog" aria-modal="true" aria-labelledby="viewer-title" hidden>
+    <div class="overlay-backdrop" data-close></div>
+    <div class="viewer-panel" id="viewer-panel">
+      <header class="viewer-head">
+        <div class="min-w-0">
+          <p class="eyebrow text-mostarda" id="viewer-mode-label">Visualização 3D</p>
+          <h2 id="viewer-title" class="truncate font-display text-2xl font-semibold sm:text-3xl"></h2>
+        </div>
+        <div class="flex items-center gap-1">
+          <button type="button" class="icon-btn text-creme" id="viewer-fullscreen" aria-label="Tela cheia" hidden><i data-lucide="maximize" class="size-5"></i></button>
+          <button type="button" class="icon-btn text-creme" data-close aria-label="Fechar visualizador"><i data-lucide="x" class="size-6"></i></button>
+        </div>
+      </header>
+
+      <div class="viewer-stage" id="viewer-stage">
+        <!-- O <model-viewer> é criado sob demanda (um modelo por prato) por assets/js/viewer.js -->
+        <div class="viewer-state" id="viewer-state" hidden></div>
+        <div class="viewer-progress" id="viewer-progress" hidden><span></span></div>
+        <span class="placeholder-badge" id="viewer-placeholder-badge" hidden><i data-lucide="box" class="size-3.5"></i> Modelo 3D ilustrativo</span>
+        <div class="viewer-tools" id="viewer-tools" hidden>
+          <button type="button" class="tool-btn" data-zoom="-1" aria-label="Afastar"><i data-lucide="minus" class="size-4"></i></button>
+          <button type="button" class="tool-btn" data-zoom="1" aria-label="Aproximar"><i data-lucide="plus" class="size-4"></i></button>
+          <button type="button" class="tool-btn" id="viewer-rotate" aria-pressed="true" aria-label="Rotação automática"><i data-lucide="rotate-3d" class="size-4"></i></button>
+          <button type="button" class="tool-btn" id="viewer-reset" aria-label="Centralizar visualização"><i data-lucide="scan" class="size-4"></i></button>
+        </div>
+      </div>
+
+      <div class="viewer-foot">
+        <div class="viewer-ar" id="viewer-ar"></div>
+        <p class="viewer-help" id="viewer-help"><i data-lucide="hand" class="size-4 shrink-0"></i> Arraste para girar · pinça ou roda do mouse para zoom</p>
+        <div class="viewer-actions">
+          <p class="font-display text-2xl font-semibold text-mostarda" id="viewer-price"></p>
+          <button type="button" class="btn btn-gold" id="viewer-add"><i data-lucide="plus" class="size-5"></i> Adicionar ao Pedido</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toasts" class="toasts" aria-live="polite" aria-atomic="false"></div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/menu-data.js"></script>
+  <script src="assets/js/utils.js"></script>
+  <script src="assets/js/cart.js"></script>
+  <script src="assets/js/viewer.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

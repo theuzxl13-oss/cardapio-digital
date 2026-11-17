@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Foto em breve">
+  <rect width="800" height="600" fill="#F1ECE3"/>
+  <circle cx="400" cy="290" r="150" fill="none" stroke="#D9CFBF" stroke-width="10"/>
+  <circle cx="400" cy="290" r="105" fill="none" stroke="#E5DDD0" stroke-width="4"/>
+  <path d="M215 175v120M200 175v55a15 15 0 0 0 30 0v-55M585 175c-25 20-25 80 0 95v115" fill="none" stroke="#C9BCA7" stroke-width="8" stroke-linecap="round"/>
+  <text x="400" y="510" text-anchor="middle" font-family="Georgia, serif" font-size="30" fill="#9A8C76">Foto oficial em breve</text>
+</svg>
