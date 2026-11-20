@@ -224,6 +224,19 @@ window.ATHINA_CARDAPIO = [
     preco: 14.0,
     tags: ['Sem álcool'],
   },
+
+  // ---------------------------------------------------------------- TESTES (ocultos do cardápio)
+  // Acessível apenas por link: ?prato=teste-camarao-na-panela&modo=ar
+  {
+    id: 'teste-camarao-na-panela',
+    nome: 'Teste · Camarão na panela (foto do restaurante)',
+    categoria: 'autorais',
+    descricao: 'Modelo 3D provisório criado a partir de uma única foto enviada pelo restaurante, para testar escala e realidade aumentada.',
+    ingredientes: ['Camarão', 'Molho de tomate', 'Cheiro-verde'],
+    porcao: 'duas',
+    preco: 0,
+    oculto: true,
+  },
 ].map((p) => ({
   // Valores padrão derivados do id — mantém o cadastro curto e os caminhos sempre relativos.
   imagem: `assets/images/pratos/${p.id}`,

@@ -3,7 +3,9 @@
   'use strict';
   const U = window.AthinaUtils;
   const CFG = window.ATHINA_CONFIG;
-  const MENU = window.ATHINA_CARDAPIO;
+  const TODOS = window.ATHINA_CARDAPIO;
+  // Itens com `oculto: true` (ex.: testes de modelos 3D) não aparecem no cardápio, só por link direto.
+  const MENU = TODOS.filter((p) => !p.oculto);
   const CATS = window.ATHINA_CATEGORIAS;
   const catName = (id) => (CATS.find((c) => c.id === id) || {}).nome || '';
 
@@ -270,7 +272,7 @@
     const q = new URLSearchParams(location.search);
     const id = q.get('prato');
     if (!id) return;
-    const p = MENU.find((x) => x.id === id);
+    const p = TODOS.find((x) => x.id === id);
     if (!p) return;
     document.getElementById('cardapio').scrollIntoView();
     setTimeout(() => window.AthinaViewer.open(p, { mode: q.get('modo') === 'ar' ? 'ar' : '3d' }), 300);

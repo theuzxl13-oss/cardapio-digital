@@ -231,6 +231,7 @@
     els.progress.hidden = true;
     els.tools.hidden = false;
     els.badge.hidden = !current.modeloPlaceholder;
+    els.badge.lastChild.textContent = current.oculto ? ' Modelo provisório · feito com 1 foto' : ' Modelo 3D ilustrativo';
     els.rotate.setAttribute('aria-pressed', 'true');
     // A detecção de suporte a AR é assíncrona: aguarda o model-viewer concluir a verificação.
     arPanel('<p class="text-center text-xs text-creme/55">Verificando compatibilidade com realidade aumentada…</p>');
@@ -265,7 +266,8 @@
       current = dish;
       mode = opts.mode === 'ar' ? 'ar' : '3d';
       els.title.textContent = dish.nome;
-      els.price.textContent = U.money(dish.preco);
+      els.price.textContent = dish.oculto ? 'Teste de modelo 3D' : U.money(dish.preco);
+      els.addBtn.hidden = !!dish.oculto;
       els.modeLabel.textContent = mode === 'ar' ? 'Ver na minha mesa · Realidade aumentada' : 'Visualização 3D';
       U.overlay.open(els.root, { onClose: Viewer.cleanup, initialFocus: els.root.querySelector('[data-close].icon-btn') });
       load();
@@ -326,7 +328,8 @@
       });
     }
 
-    document.getElementById('viewer-add').addEventListener('click', () => {
+    els.addBtn = document.getElementById('viewer-add');
+    els.addBtn.addEventListener('click', () => {
       if (current) window.AthinaCart.add(current.id);
     });
 

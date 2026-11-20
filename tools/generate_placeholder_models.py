@@ -47,9 +47,10 @@ def rot_matrix(rx=0.0, ry=0.0, rz=0.0):
 
 
 class Mesh:
-    def __init__(self, pos, idx):
+    def __init__(self, pos, idx, uv=None):
         self.pos = np.asarray(pos, dtype=np.float64)
         self.idx = np.asarray(idx, dtype=np.uint32).reshape(-1, 3)
+        self.uv = None if uv is None else np.asarray(uv, dtype=np.float64)  # coordenadas de textura (opcional)
 
     def transform(self, t=(0, 0, 0), r=(0, 0, 0), s=(1, 1, 1)):
         R = rot_matrix(*r)
@@ -234,6 +235,9 @@ class GLB:
         self.name = name
         self.parts = {}   # material -> list[Mesh]
         self.materials = {}
+        self.textures = {}  # material -> (bytes, mimeType)
+        self.extras = {"placeholder": True,
+                       "note": "Modelo ilustrativo gerado proceduralmente. Substituir pelo modelo real."}
 
     def mat(self, key, color, rough=0.7, metal=0.0, alpha=None):
         m = {"name": key, "pbrMetallicRoughness": {
@@ -246,6 +250,12 @@ class GLB:
         self.parts.setdefault(key, [])
         return key
 
+    def mat_texture(self, key, image_bytes, mime="image/jpeg", rough=0.55, metal=0.0):
+        """Material com foto aplicada (baseColorTexture)."""
+        self.mat(key, "#FFFFFF", rough, metal)
+        self.textures[key] = (image_bytes, mime)
+        return key
+
     def add(self, key, *meshes):
         for m in meshes:
             self.parts[key].append(m)
@@ -253,6 +263,7 @@ class GLB:
     def write(self, path):
         bin_ = bytearray()
         views, accessors, prims, mats = [], [], [], []
+        images, textures = [], []
         mat_index = {}
 
         def push(data, target):
@@ -284,23 +295,39 @@ class GLB:
             vi = push(idx.flatten().tobytes(), 34963)
             accessors.append({"bufferView": vi, "componentType": 5125, "count": idx.size, "type": "SCALAR"})
             ai = len(accessors) - 1
+            attributes = {"POSITION": ap, "NORMAL": an}
+            if all(m.uv is not None for m in meshes):
+                uv = np.vstack([m.uv for m in meshes]).astype(np.float32)
+                vu = push(uv.tobytes(), 34962)
+                accessors.append({"bufferView": vu, "componentType": 5126, "count": len(uv), "type": "VEC2"})
+                attributes["TEXCOORD_0"] = len(accessors) - 1
             if key not in mat_index:
                 mat_index[key] = len(mats)
-                mats.append(self.materials[key])
-            prims.append({"attributes": {"POSITION": ap, "NORMAL": an}, "indices": ai,
-                          "material": mat_index[key]})
+                m = json.loads(json.dumps(self.materials[key]))
+                if key in self.textures:
+                    data, mime = self.textures[key]
+                    while len(bin_) % 4:
+                        bin_.append(0)
+                    off = len(bin_); bin_.extend(data)
+                    views.append({"buffer": 0, "byteOffset": off, "byteLength": len(data)})
+                    images.append({"bufferView": len(views) - 1, "mimeType": mime})
+                    textures.append({"sampler": 0, "source": len(images) - 1})
+                    m["pbrMetallicRoughness"]["baseColorTexture"] = {"index": len(textures) - 1}
+                mats.append(m)
+            prims.append({"attributes": attributes, "indices": ai, "material": mat_index[key]})
         while len(bin_) % 4:
             bin_.append(0)
         gltf = {
-            "asset": {"version": "2.0", "generator": "Athina placeholder generator",
-                      "extras": {"placeholder": True,
-                                 "note": "Modelo ilustrativo gerado proceduralmente. Substituir pelo modelo real."}},
+            "asset": {"version": "2.0", "generator": "Athina placeholder generator", "extras": self.extras},
             "scene": 0, "scenes": [{"nodes": [0]}],
             "nodes": [{"mesh": 0, "name": self.name}],
             "meshes": [{"name": self.name, "primitives": prims}],
             "materials": mats, "accessors": accessors, "bufferViews": views,
             "buffers": [{"byteLength": len(bin_)}],
         }
+        if images:
+            gltf.update(images=images, textures=textures,
+                        samplers=[{"magFilter": 9729, "minFilter": 9987, "wrapS": 33071, "wrapT": 33071}])
         js = json.dumps(gltf, separators=(",", ":")).encode()
         while len(js) % 4:
             js += b" "
